@@ -10,54 +10,54 @@
   },
   "productos_alimenticios": [
     {
-      "nombre": "Producto1",
-      "marca": "Marca1",
-      "precio": 10.0
-    },
-    {
-      "nombre": "Producto2",
-      "marca": "Marca2",
-      "precio": 15.0
-    },
-    {
-      "nombre": "Producto3",
-      "marca": "Marca3",
-      "precio": 8.0
-    },
-    {
-      "nombre": "Producto4",
-      "marca": "Marca4",
+      "nombre": "Aceite de Oliva Extra Virgen",
+      "marca": "Aceitunas Doradas",
       "precio": 12.0
     },
     {
-      "nombre": "Producto5",
-      "marca": "Marca5",
-      "precio": 20.0
+      "nombre": "Cereal de Avena",
+      "marca": "NutriAvena",
+      "precio": 8.0
     },
     {
-      "nombre": "Producto6",
-      "marca": "Marca6",
-      "precio": 7.0
-    },
-    {
-      "nombre": "Producto7",
-      "marca": "Marca7",
+      "nombre": "Chocolate Negro 70%",
+      "marca": "Chocolates Amargos",
       "precio": 18.0
     },
     {
-      "nombre": "Producto8",
-      "marca": "Marca8",
-      "precio": 9.0
-    },
-    {
-      "nombre": "Producto9",
-      "marca": "Marca9",
+      "nombre": "Huevos Orgánicos",
+      "marca": "Granja Ecológica",
       "precio": 14.0
     },
     {
-      "nombre": "Producto10",
-      "marca": "Marca10",
+      "nombre": "Leche Entera",
+      "marca": "Granja Lechera",
+      "precio": 15.0
+    },
+    {
+      "nombre": "Manzanas Gala",
+      "marca": "Manzanas Deliciosas",
+      "precio": 10.0
+    },
+    {
+      "nombre": "Pan Integral",
+      "marca": "Panadería Saludable",
+      "precio": 20.0
+    },
+    {
+      "nombre": "Salmón Fresco",
+      "marca": "Pescados del Mar",
       "precio": 25.0
+    },
+    {
+      "nombre": "Sopa de Tomate en Lata",
+      "marca": "Sopas Caseras",
+      "precio": 9.0
+    },
+    {
+      "nombre": "Yogur Griego",
+      "marca": "Sabor Yogur",
+      "precio": 7.0
     }
   ]
 }
