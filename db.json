@@ -7,5 +7,57 @@
   ],
   "profile": {
     "name": "typicode"
-  }
+  },
+  "productos_alimenticios": [
+    {
+      "nombre": "Producto1",
+      "marca": "Marca1",
+      "precio": 10.0
+    },
+    {
+      "nombre": "Producto2",
+      "marca": "Marca2",
+      "precio": 15.0
+    },
+    {
+      "nombre": "Producto3",
+      "marca": "Marca3",
+      "precio": 8.0
+    },
+    {
+      "nombre": "Producto4",
+      "marca": "Marca4",
+      "precio": 12.0
+    },
+    {
+      "nombre": "Producto5",
+      "marca": "Marca5",
+      "precio": 20.0
+    },
+    {
+      "nombre": "Producto6",
+      "marca": "Marca6",
+      "precio": 7.0
+    },
+    {
+      "nombre": "Producto7",
+      "marca": "Marca7",
+      "precio": 18.0
+    },
+    {
+      "nombre": "Producto8",
+      "marca": "Marca8",
+      "precio": 9.0
+    },
+    {
+      "nombre": "Producto9",
+      "marca": "Marca9",
+      "precio": 14.0
+    },
+    {
+      "nombre": "Producto10",
+      "marca": "Marca10",
+      "precio": 25.0
+    }
+  ]
 }
