@@ -1,12 +1,14 @@
 const productos = [];
 const carrito = [];
+let productosFiltrados = [];
 
 function agregarProducto(index) {
   const producto = productos[index];
   if (producto) {
-    const productoEnCarrito = carrito.find(item => (
-      item.nombre === producto.nombre && item.marca === producto.marca
-    ));
+    const productoEnCarrito = carrito.find(
+      (item) =>
+        item.nombre === producto.nombre && item.marca === producto.marca
+    );
 
     if (productoEnCarrito) {
       productoEnCarrito.cantidad += 1;
@@ -39,31 +41,31 @@ function quitarProducto(index) {
 }
 
 function mostrarProductosEnCarrito() {
-  const carritoTableBody = document.getElementById('carritoTableBody');
-  carritoTableBody.innerHTML = '';
+  const carritoTableBody = document.getElementById("carritoTableBody");
+  carritoTableBody.innerHTML = "";
 
   let subtotal = 0;
 
   carrito.forEach((producto, index) => {
-    const row = document.createElement('tr');
+    const row = document.createElement("tr");
 
-    const nombreCell = document.createElement('td');
+    const nombreCell = document.createElement("td");
     nombreCell.textContent = producto.nombre;
 
-    const precioCell = document.createElement('td');
+    const precioCell = document.createElement("td");
     precioCell.textContent = producto.precio;
 
-    const cantidadCell = document.createElement('td');
+    const cantidadCell = document.createElement("td");
     cantidadCell.textContent = producto.cantidad;
 
-    const subtotalCell = document.createElement('td');
+    const subtotalCell = document.createElement("td");
     subtotalCell.textContent = producto.precio * producto.cantidad;
 
-    const accionesCell = document.createElement('td');
-    const quitarButton = document.createElement('button');
-    quitarButton.textContent = 'Quitar';
-    quitarButton.classList.add('btn', 'btn-danger', 'btn-sm');
-    quitarButton.addEventListener('click', () => quitarProducto(index));
+    const accionesCell = document.createElement("td");
+    const quitarButton = document.createElement("button");
+    quitarButton.textContent = "Quitar";
+    quitarButton.classList.add("btn", "btn-danger", "btn-sm");
+    quitarButton.addEventListener("click", () => quitarProducto(index));
 
     accionesCell.appendChild(quitarButton);
 
@@ -78,87 +80,175 @@ function mostrarProductosEnCarrito() {
     subtotal += producto.precio * producto.cantidad;
   });
 
-  const totalRow = document.createElement('tr');
-  totalRow.innerHTML = '<td colspan="3">Total:</td><td>' + subtotal + '</td><td></td>';
+  const totalRow = document.createElement("tr");
+  totalRow.innerHTML = "<td colspan='3'>Total:</td><td>" + subtotal + "</td><td></td>";
   carritoTableBody.appendChild(totalRow);
 }
 
-document.getElementById('comprarButton').addEventListener('click', function() {
+document.getElementById("comprarButton").addEventListener("click", function () {
   vaciarCarritoYMostrarMensajeCompra();
 });
 
 function vaciarCarritoYMostrarMensajeCompra() {
   if (carrito.length === 0) {
     Swal.fire({
-      icon: 'error',
-      title: 'Oops...',
-      text: 'Parece que tienes el carrito vacío!'
-    })
-    mensajeCompra.textContent = 'Primero debes llenar el carrito';
+      icon: "error",
+      title: "Oops...",
+      text: "Parece que tienes el carrito vacío!",
+    });
+    mensajeCompra.textContent = "Primero debes llenar el carrito";
   } else {
     carrito.length = 0;
     mostrarProductosEnCarrito();
     const swalWithBootstrapButtons = Swal.mixin({
       customClass: {
-        confirmButton: 'btn btn-success',
-        cancelButton: 'btn btn-danger'
+        confirmButton: "btn btn-success",
+        cancelButton: "btn btn-danger",
       },
-      buttonsStyling: false
-    })
-    
-    swalWithBootstrapButtons.fire({
-      title: 'Confirmación',
-      text: "Estas a punto de realizar tu compra",
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonText: 'Comprar!',
-      cancelButtonText: 'Cancelar',
-      reverseButtons: true
-    }).then((result) => {
-      if (result.isConfirmed) {
-        swalWithBootstrapButtons.fire(
-          'Compra Realizada!',
-          'Su compra ha realizada con exito.',
-          'success'
-        )
-      } else if (
-        /* Read more about handling dismissals below */
-        result.dismiss === Swal.DismissReason.cancel
-      ) {
-        swalWithBootstrapButtons.fire(
-          'Cancelado',
-          'Su compra ha sido cancelada.',
-          'error'
-        )
-      }
-    })
+      buttonsStyling: false,
+    });
+
+    swalWithBootstrapButtons
+      .fire({
+        title: "Confirmación",
+        text: "Estas a punto de realizar tu compra",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonText: "Comprar!",
+        cancelButtonText: "Cancelar",
+        reverseButtons: true,
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+          swalWithBootstrapButtons.fire(
+            "Compra Realizada!",
+            "Su compra ha realizada con éxito.",
+            "success"
+          );
+        } else if (
+          /* Read more about handling dismissals below */
+          result.dismiss === Swal.DismissReason.cancel
+        ) {
+          swalWithBootstrapButtons.fire(
+            "Cancelado",
+            "Su compra ha sido cancelada.",
+            "error"
+          );
+        }
+      });
   }
 }
 
-fetch('https://my-json-server.typicode.com/EmiSoba/proyectoJS/productos_alimenticios')
-  .then(response => response.json())
-  .then(data => {
-    const productosTableBody = document.getElementById('productosTableBody');
+// Resto del código ...
+
+document.querySelector("button.btn-primary").addEventListener("click", function () {
+  const input = document.querySelector("input.form-control");
+  const searchTerm = input.value.toLowerCase();
+
+  productosFiltrados = productos.filter((producto) => {
+    return producto.nombre.toLowerCase().includes(searchTerm);
+  });
+
+  const productosTableBody = document.getElementById("productosTableBody");
+  productosTableBody.innerHTML = "";
+
+  productosFiltrados.forEach((producto) => {
+    const index = productos.indexOf(producto); // Obtener el índice real del producto
+
+    const row = document.createElement("tr");
+
+    const nombreCell = document.createElement("td");
+    nombreCell.textContent = producto.nombre;
+
+    const marcaCell = document.createElement("td");
+    marcaCell.textContent = producto.marca;
+
+    const precioCell = document.createElement("td");
+    precioCell.textContent = producto.precio;
+
+    const accionesCell = document.createElement("td");
+    const agregarButton = document.createElement("button");
+    agregarButton.textContent = "Agregar";
+    agregarButton.classList.add("btn", "btn-success", "btn-sm");
+    agregarButton.addEventListener("click", () => agregarProducto(index));
+
+    accionesCell.appendChild(agregarButton);
+
+    row.appendChild(nombreCell);
+    row.appendChild(marcaCell);
+    row.appendChild(precioCell);
+    row.appendChild(accionesCell);
+
+    productosTableBody.appendChild(row);
+  });
+});
+
+// Resto del código ...
+
+
+// Restaurar la lista de productos al hacer clic en el campo de búsqueda
+document.querySelector("input.form-control").addEventListener("click", function () {
+  restaurarListaProductos();
+  this.value = "";
+});
+
+function restaurarListaProductos() {
+  const productosTableBody = document.getElementById("productosTableBody");
+  productosTableBody.innerHTML = "";
+
+  productos.forEach((producto, index) => {
+    const row = document.createElement("tr");
+
+    const nombreCell = document.createElement("td");
+    nombreCell.textContent = producto.nombre;
+
+    const marcaCell = document.createElement("td");
+    marcaCell.textContent = producto.marca;
+
+    const precioCell = document.createElement("td");
+    precioCell.textContent = producto.precio;
+
+    const accionesCell = document.createElement("td");
+    const agregarButton = document.createElement("button");
+    agregarButton.textContent = "Agregar";
+    agregarButton.classList.add("btn", "btn-success", "btn-sm");
+    agregarButton.addEventListener("click", () => agregarProducto(index));
+
+    accionesCell.appendChild(agregarButton);
+
+    row.appendChild(nombreCell);
+    row.appendChild(marcaCell);
+    row.appendChild(precioCell);
+    row.appendChild(accionesCell);
+
+    productosTableBody.appendChild(row);
+  });
+}
+
+fetch("https://my-json-server.typicode.com/EmiSoba/proyectoJS/productos_alimenticios")
+  .then((response) => response.json())
+  .then((data) => {
+    const productosTableBody = document.getElementById("productosTableBody");
 
     if (Array.isArray(data)) {
       productos.push(...data);
       data.forEach((producto, index) => {
-        const row = document.createElement('tr');
+        const row = document.createElement("tr");
 
-        const nombreCell = document.createElement('td');
+        const nombreCell = document.createElement("td");
         nombreCell.textContent = producto.nombre;
 
-        const marcaCell = document.createElement('td');
+        const marcaCell = document.createElement("td");
         marcaCell.textContent = producto.marca;
 
-        const precioCell = document.createElement('td');
+        const precioCell = document.createElement("td");
         precioCell.textContent = producto.precio;
 
-        const accionesCell = document.createElement('td');
-        const agregarButton = document.createElement('button');
-        agregarButton.textContent = 'Agregar';
-        agregarButton.classList.add('btn', 'btn-success', 'btn-sm');
-        agregarButton.addEventListener('click', () => agregarProducto(index));
+        const accionesCell = document.createElement("td");
+        const agregarButton = document.createElement("button");
+        agregarButton.textContent = "Agregar";
+        agregarButton.classList.add("btn", "btn-success", "btn-sm");
+        agregarButton.addEventListener("click", () => agregarProducto(index));
 
         accionesCell.appendChild(agregarButton);
 
@@ -170,9 +260,9 @@ fetch('https://my-json-server.typicode.com/EmiSoba/proyectoJS/productos_alimenti
         productosTableBody.appendChild(row);
       });
     } else {
-      console.error('No se encontró la lista de productos en la API.');
+      console.error("No se encontró la lista de productos en la API.");
     }
   })
-  .catch(error => {
-    console.error('Error al cargar los datos desde la API:', error);
+  .catch((error) => {
+    console.error("Error al cargar los datos desde la API:", error);
   });
