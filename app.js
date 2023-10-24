@@ -26,8 +26,16 @@ function agregarProducto(index) {
 }
 
 function quitarProducto(index) {
-  carrito.splice(index, 1);
-  mostrarProductosEnCarrito();
+  const productoEnCarrito = carrito[index];
+  if (productoEnCarrito) {
+    if (productoEnCarrito.cantidad > 1) {
+      productoEnCarrito.cantidad -= 1;
+      productoEnCarrito.precioTotal -= productoEnCarrito.precio;
+    } else {
+      carrito.splice(index, 1);
+    }
+    mostrarProductosEnCarrito();
+  }
 }
 
 function mostrarProductosEnCarrito() {
@@ -43,13 +51,13 @@ function mostrarProductosEnCarrito() {
     nombreCell.textContent = producto.nombre;
 
     const precioCell = document.createElement('td');
-    precioCell.textContent = producto.precioTotal;
+    precioCell.textContent = producto.precio;
 
     const cantidadCell = document.createElement('td');
     cantidadCell.textContent = producto.cantidad;
 
     const subtotalCell = document.createElement('td');
-    subtotalCell.textContent = producto.precioTotal * producto.cantidad;
+    subtotalCell.textContent = producto.precio * producto.cantidad;
 
     const accionesCell = document.createElement('td');
     const quitarButton = document.createElement('button');
@@ -67,7 +75,7 @@ function mostrarProductosEnCarrito() {
 
     carritoTableBody.appendChild(row);
 
-    subtotal += producto.precioTotal * producto.cantidad;
+    subtotal += producto.precio * producto.cantidad;
   });
 
   const totalRow = document.createElement('tr');
@@ -76,13 +84,55 @@ function mostrarProductosEnCarrito() {
 }
 
 document.getElementById('comprarButton').addEventListener('click', function() {
-  mostrarMensajeCompra();
+  vaciarCarritoYMostrarMensajeCompra();
 });
 
-function mostrarMensajeCompra() {
-  const mensajeCompra = document.getElementById('mensajeCompra');
-  mensajeCompra.textContent = '¡Muchas gracias por su compra!';
-  mensajeCompra.classList.remove('hidden');
+function vaciarCarritoYMostrarMensajeCompra() {
+  if (carrito.length === 0) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'Parece que tienes el carrito vacío!'
+    })
+    mensajeCompra.textContent = 'Primero debes llenar el carrito';
+  } else {
+    carrito.length = 0;
+    mostrarProductosEnCarrito();
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton: 'btn btn-success',
+        cancelButton: 'btn btn-danger'
+      },
+      buttonsStyling: false
+    })
+    
+    swalWithBootstrapButtons.fire({
+      title: 'Confirmación',
+      text: "Estas a punto de realizar tu compra",
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Comprar!',
+      cancelButtonText: 'Cancelar',
+      reverseButtons: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+        swalWithBootstrapButtons.fire(
+          'Compra Realizada!',
+          'Su compra ha realizada con exito.',
+          'success'
+        )
+      } else if (
+        /* Read more about handling dismissals below */
+        result.dismiss === Swal.DismissReason.cancel
+      ) {
+        swalWithBootstrapButtons.fire(
+          'Cancelado',
+          'Su compra ha sido cancelada.',
+          'error'
+        )
+      }
+    })
+  }
 }
 
 fetch('https://my-json-server.typicode.com/EmiSoba/proyectoJS/productos_alimenticios')
